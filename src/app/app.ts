@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /*
  * Angular Modules
  */
@@ -8,6 +9,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
 
 // Setup redux with ngrx
 import { Store, StoreModule } from '@ngrx/store';
@@ -41,6 +43,7 @@ import { Authentication } from './services/authentication';
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
+        BrowserAnimationsModule,
         MaterialModule.forRoot(),
         RouterModule.forRoot(routes, { useHash: true }),
         StoreModule.provideStore({ authStore }, { authStore: authInitialState }),
