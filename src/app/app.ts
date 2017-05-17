@@ -25,7 +25,7 @@ import { AppComponent } from './components/app.component';
 /**
  * Import material UI Components
  */
-import { MdButtonModule, MdSlideToggle, MaterialModule } from '@angular/material';
+import { MdButtonModule, MdSlideToggle } from '@angular/material';
 
 import { routes } from './app.routes';
 
