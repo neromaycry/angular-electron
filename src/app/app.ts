@@ -13,7 +13,7 @@ import { HttpModule } from '@angular/http';
 
 // Setup redux with ngrx
 import { Store, StoreModule } from '@ngrx/store';
-import { authStore, authInitialState } from './store/auth.store';
+import { reducers, initialState } from './store/index';
 
 /**
  * Import our child components
@@ -47,7 +47,7 @@ import { Authentication } from './services/authentication';
         MdButtonModule,
         MdSlideToggleModule,
         RouterModule.forRoot(routes, { useHash: true }),
-        StoreModule.provideStore({ authStore }, { authStore: authInitialState }),
+        StoreModule.forRoot(reducers, <any>initialState),
     ],
     providers: [Authentication],
     declarations: [AppComponent, HomeComponent, LoginComponent],

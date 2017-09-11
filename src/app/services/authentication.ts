@@ -9,8 +9,11 @@ import { Http, Headers } from '@angular/http';
  * Import the ngrx configured store
  */
 import { Store } from '@ngrx/store';
-import { AppState } from './../store/appState.store';
-import { AUTH_ACTION_TYPES } from './../store/auth.store';
+import { State } from './../store/index';
+import { AUTH_ACTION_TYPES } from './../store/actions/user.actions';
+
+// Our custom actions.
+import { GithubAuth, ChangeName } from './../store/actions/user.actions';
 
 /**
  * Include electron browser so that a new windows can be triggered for auth
@@ -31,7 +34,7 @@ export class Authentication {
   http: Http;
 
   //Inject the store to make sure state changes go through the store
-  constructor(public store: Store<AppState>, http: Http) {
+  constructor(public store: Store<State>, http: Http) {
     //authenticate and call the store to update the token
     const webPreferences = {
       nodeIntegration: false
@@ -140,11 +143,9 @@ export class Authentication {
    */
   requestUserData(token) {
     //set the token
-    this.store.dispatch({
-      type: AUTH_ACTION_TYPES.GITHUB_AUTH, payload: {
-        'token': token
-      }
-    });
+    this.store.dispatch(new GithubAuth({
+      'token': token
+    }));
 
     let headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -155,11 +156,9 @@ export class Authentication {
         //call the store to update the authToken
         let body_object = JSON.parse(response['_body']);
         console.log(body_object);
-        this.store.dispatch({
-          type: AUTH_ACTION_TYPES.CHANGE_NAME, payload: {
-            'username': body_object.name
-          }
-        });
+        this.store.dispatch(new ChangeName({
+          'username': body_object.name
+        }));
       },
       err => console.log(err),
       () => console.log('Request Complete')

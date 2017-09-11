@@ -1,14 +1,16 @@
 /**
  * Import decorators and services from angular
  */
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 /**
  * Import the ngrx configured store
  */
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/appState.store';
+import { State } from '../../store/index';
+
+import { User } from './../../store/models/auth.model';
 
 /**
  * Import the authentication service to be injected into our component
@@ -20,24 +22,21 @@ import { Authentication } from '../../services/authentication';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     unsubscribe: any;
     authenticated: boolean;
 
     //Inject Authentication service on construction
-    constructor(private _router: Router, private _ngZone: NgZone, private auth: Authentication, public store: Store<AppState>) {
-        this.auth = auth;
+    constructor(private _router: Router, private _ngZone: NgZone, private auth: Authentication, public store: Store<State>) { }
 
+    ngOnInit() {
         this.checkAuth();
 
-        this.store.map((fullStore: any) => {
-            return fullStore.authStore;
-        }).subscribe((state: any) => {
-            console.log(state);
-            this.authenticated = state.authenticated;
+        this.store.map((state: State) => state.user).subscribe((userState: User) => {
+            this.authenticated = userState.authenticated;
             //Because the BrowserWindow runs outside angular for some reason we need to call Zone.run()
             this._ngZone.run(() => {
-                if (state.username != '') {
+                if (userState.username != '') {
                     this._router.navigate(['home']);
                 }
             });
@@ -50,7 +49,6 @@ export class LoginComponent {
      */
     checkAuth() {
         let storageToken = window.localStorage.getItem('authToken');
-
         if (storageToken) {
             this.auth.requestUserData(storageToken);
         }

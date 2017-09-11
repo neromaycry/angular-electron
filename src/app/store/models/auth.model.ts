@@ -1,4 +1,4 @@
-export interface AppState {
+export interface User {
     authToken: any;
     username: string;
     authenticated: boolean;

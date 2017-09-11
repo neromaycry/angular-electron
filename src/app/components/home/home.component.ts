@@ -7,7 +7,7 @@ import { FormControl, FormGroup } from '@angular/forms';
  * Import the ngrx configured store
  */
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/appState.store';
+import { State } from '../../store/index';
 
 import * as path from 'path';
 
@@ -26,11 +26,11 @@ export class HomeComponent implements OnInit {
     messageText: new FormControl('Angular2'),
   });
 
-  constructor(public store: Store<AppState>) { }
+  constructor(public store: Store<State>) { }
 
   ngOnInit() {
-    let state = this.store.select('authStore').subscribe((state: any) => {
-      this.name = state.username;
+    let state = this.store.select('user').subscribe((userState: any) => {
+      this.name = userState.username;
     });
   }
   doNotify() {

@@ -1,9 +1,5 @@
-import { ActionReducer, Action } from '@ngrx/store';
-
-export const AUTH_ACTION_TYPES = {
-    GITHUB_AUTH: 'GITHUB_AUTH',
-    CHANGE_NAME: 'CHANGE_NAME',
-};
+import { AUTH_ACTION_TYPES, Actions } from './../actions/user.actions';
+import { User } from './../models/auth.model';
 
 export const authInitialState = {
     authToken: window.localStorage.getItem('authToken') || false,
@@ -11,7 +7,7 @@ export const authInitialState = {
     username: '',
 };
 
-export const authStore: ActionReducer<Object> = (state: Object = authInitialState, action: Action) => {
+export function userReducer(state: User = authInitialState, action: Actions) {
 
     switch (action.type) {
 
@@ -21,7 +17,7 @@ export const authStore: ActionReducer<Object> = (state: Object = authInitialStat
 
         case AUTH_ACTION_TYPES.CHANGE_NAME:
             return Object.assign(state, { username: action.payload.username });
-            
+
         default:
             return state;
     }
